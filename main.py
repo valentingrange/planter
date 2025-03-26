@@ -28,6 +28,10 @@ hauteur_arbre_2 = 10
 x_arbre_2 = x_personnage - 10
 y_arbre_2 = y_personnage + 20
 
+# Variables de contrôle pour les arbres
+controle_arbre_1 = True  # Par défaut, l'arbre_1 suit le personnage
+controle_arbre_2 = True  # Par défaut, l'arbre_2 suit le personnage
+
 # Créer un canevas pour dessiner
 canvas = tk.Canvas(root, width=largeur_fenetre, height=hauteur_fenetre)
 canvas.pack()
@@ -49,8 +53,10 @@ def deplacer_gauche(event):
     global x_personnage, x_arbre_1, x_arbre_2
     if x_personnage > 0:  # Limiter à la gauche de la fenêtre
         x_personnage -= vitesse
-        x_arbre_1 -= vitesse  # Si l'arbre est détaché, ne pas déplacer x_arbre_1 ici
-        x_arbre_2 -= vitesse  # Si l'arbre est détaché, ne pas déplacer x_arbre_2 ici
+        if controle_arbre_1:  # Si le contrôle de l'arbre_1 est actif, on déplace l'arbre_1
+            x_arbre_1 -= vitesse
+        if controle_arbre_2:  # Si le contrôle de l'arbre_2 est actif, on déplace l'arbre_2
+            x_arbre_2 -= vitesse
         canvas.coords(personnage, x_personnage, y_personnage, x_personnage + largeur_personnage, y_personnage + hauteur_personnage)
         canvas.coords(arbre_1, x_arbre_1, y_arbre_1, x_arbre_1 + largeur_arbre_1, y_arbre_1 + hauteur_arbre_1)
         canvas.coords(arbre_2, x_arbre_2, y_arbre_2, x_arbre_2 + largeur_arbre_2, y_arbre_2 + hauteur_arbre_2)
@@ -60,8 +66,10 @@ def deplacer_droite(event):
     global x_personnage, x_arbre_1, x_arbre_2
     if x_personnage < largeur_fenetre - largeur_personnage:  # Limiter à la droite de la fenêtre
         x_personnage += vitesse
-        x_arbre_1 += vitesse  # Si l'arbre est détaché, ne pas déplacer x_arbre_1 ici
-        x_arbre_2 += vitesse  # Si l'arbre est détaché, ne pas déplacer x_arbre_2 ici
+        if controle_arbre_1:  # Si le contrôle de l'arbre_1 est actif, on déplace l'arbre_1
+            x_arbre_1 += vitesse
+        if controle_arbre_2:  # Si le contrôle de l'arbre_2 est actif, on déplace l'arbre_2
+            x_arbre_2 += vitesse
         canvas.coords(personnage, x_personnage, y_personnage, x_personnage + largeur_personnage, y_personnage + hauteur_personnage)
         canvas.coords(arbre_1, x_arbre_1, y_arbre_1, x_arbre_1 + largeur_arbre_1, y_arbre_1 + hauteur_arbre_1)
         canvas.coords(arbre_2, x_arbre_2, y_arbre_2, x_arbre_2 + largeur_arbre_2, y_arbre_2 + hauteur_arbre_2)
@@ -71,8 +79,10 @@ def deplacer_haut(event):
     global y_personnage, y_arbre_1, y_arbre_2
     if y_personnage > 0:  # Limiter en haut de la fenêtre
         y_personnage -= vitesse  # Décale vers le haut
-        y_arbre_1 -= vitesse  # Si l'arbre est détaché, ne pas déplacer y_arbre_1 ici
-        y_arbre_2 -= vitesse  # Si l'arbre est détaché, ne pas déplacer y_arbre_2 ici
+        if controle_arbre_1:  # Si le contrôle de l'arbre_1 est actif, on déplace l'arbre_1
+            y_arbre_1 -= vitesse
+        if controle_arbre_2:  # Si le contrôle de l'arbre_2 est actif, on déplace l'arbre_2
+            y_arbre_2 -= vitesse
         canvas.coords(personnage, x_personnage, y_personnage, x_personnage + largeur_personnage, y_personnage + hauteur_personnage)
         canvas.coords(arbre_1, x_arbre_1, y_arbre_1, x_arbre_1 + largeur_arbre_1, y_arbre_1 + hauteur_arbre_1)
         canvas.coords(arbre_2, x_arbre_2, y_arbre_2, x_arbre_2 + largeur_arbre_2, y_arbre_2 + hauteur_arbre_2)
@@ -82,24 +92,31 @@ def deplacer_bas(event):
     global y_personnage, y_arbre_1, y_arbre_2
     if y_personnage < hauteur_fenetre - hauteur_personnage:  # Limiter en bas de la fenêtre
         y_personnage += vitesse  # Décale vers le bas
-        y_arbre_1 += vitesse  # Si l'arbre est détaché, ne pas déplacer y_arbre_1 ici
-        y_arbre_2 += vitesse  # Si l'arbre est détaché, ne pas déplacer y_arbre_2 ici
+        if controle_arbre_1:  # Si le contrôle de l'arbre_1 est actif, on déplace l'arbre_1
+            y_arbre_1 += vitesse
+        if controle_arbre_2:  # Si le contrôle de l'arbre_2 est actif, on déplace l'arbre_2
+            y_arbre_2 += vitesse
         canvas.coords(personnage, x_personnage, y_personnage, x_personnage + largeur_personnage, y_personnage + hauteur_personnage)
         canvas.coords(arbre_1, x_arbre_1, y_arbre_1, x_arbre_1 + largeur_arbre_1, y_arbre_1 + hauteur_arbre_1)
         canvas.coords(arbre_2, x_arbre_2, y_arbre_2, x_arbre_2 + largeur_arbre_2, y_arbre_2 + hauteur_arbre_2)
 
-# Détacher l'arbre (perdre le contrôle de l'arbre)
-def detacher_arbre(event):
-    global controle_arbre
-    controle_arbre = False  # L'arbre ne suit plus le personnage
+# Fonction pour désactiver le contrôle de l'arbre_1
+def desactiver_controle_arbre_1(event):
+    global controle_arbre_1
+    controle_arbre_1 = False  # Désactive le contrôle de l'arbre_1
+
+# Fonction pour désactiver le contrôle de l'arbre_2
+def desactiver_controle_arbre_2(event):
+    global controle_arbre_2
+    controle_arbre_2 = False  # Désactive le contrôle de l'arbre_2
 
 # Associer les touches du clavier aux actions
 root.bind("<Left>", deplacer_gauche)
 root.bind("<Right>", deplacer_droite)
 root.bind("<Up>", deplacer_haut)
 root.bind("<Down>", deplacer_bas)
-root.bind("&", detacher_arbre)
+root.bind("&", desactiver_controle_arbre_1)
+root.bind("é", desactiver_controle_arbre_2)
 
 # Lancer la fenêtre
-controle_arbre = True  # Par défaut, l'arbre suit le personnage
 root.mainloop()
